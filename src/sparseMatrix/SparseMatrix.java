@@ -18,8 +18,8 @@ public class SparseMatrix {
     /**
      * 普通数组转稀疏矩阵
      *
-     * @param twoDimensionalArray
-     * @return
+     * @param twoDimensionalArray 原始二维数组
+     * @return 转换后的稀疏矩阵
      */
     public static int[][] toSparseArray(int[][] twoDimensionalArray) {
         int row = twoDimensionalArray.length;
@@ -57,8 +57,8 @@ public class SparseMatrix {
 
     /**
      * 稀疏矩阵转换回原始数组
-     * @param spareArray
-     * @return
+     * @param spareArray 稀疏矩阵
+     * @return 转换后的原始二维数组
      */
     public static int[][] toOriginalArray(int[][] spareArray){
         int[][] ret = new int[spareArray[0][1]][spareArray[0][1]];
@@ -77,17 +77,17 @@ public class SparseMatrix {
         chessArray1[2][3] = 2;
         //输出原始的二维数组
         System.out.println("原始的二维数组");
-        ArrayTool.prinTwoDimensionalArray(chessArray1);
+        ArrayTool.printTwoDimensionalArray(chessArray1);
         System.out.println();
 
         System.out.println("原始数组转换成稀疏矩阵");
         int[][] ret = toSparseArray(chessArray1);
-        ArrayTool.prinTwoDimensionalArray(ret);
+        ArrayTool.printTwoDimensionalArray(ret);
         System.out.println();
 
         System.out.println("稀疏矩阵转换成原始数组");
         int[][] originArray = toOriginalArray(ret);
-        ArrayTool.prinTwoDimensionalArray(originArray);
+        ArrayTool.printTwoDimensionalArray(originArray);
     }
 
 }

@@ -8,7 +8,7 @@ package tool;
  */
 public class ArrayTool {
 
-    public static void prinTwoDimensionalArray(int[][] array){
+    public static void printTwoDimensionalArray(int[][] array){
         for(int[] row:array){
             for(int element:row){
                 System.out.printf("%d\t",element);
