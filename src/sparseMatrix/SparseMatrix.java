@@ -25,15 +25,15 @@ public class SparseMatrix {
         int row = twoDimensionalArray.length;
         int column = twoDimensionalArray[0].length;
 
-        List<Map<String,Integer>> data = new LinkedList<>();
+        List<Map<String, Integer>> data = new LinkedList<>();
 
         for (int r = 0; r < twoDimensionalArray.length; r++) {
             for (int c = 0; c < twoDimensionalArray[r].length; c++) {
                 if (0 != twoDimensionalArray[r][c]) {
                     Map<String, Integer> e = new HashMap<>();
-                    e.put("row",r);
-                    e.put("column",c);
-                    e.put("value",twoDimensionalArray[r][c]);
+                    e.put("row", r);
+                    e.put("column", c);
+                    e.put("value", twoDimensionalArray[r][c]);
                     data.add(e);
                 }
             }
@@ -46,7 +46,7 @@ public class SparseMatrix {
 
         int current = 1;
 
-        for(Map<String,Integer> e:data){
+        for (Map<String, Integer> e : data) {
             ret[current][0] = e.get("row");
             ret[current][1] = e.get("column");
             ret[current][2] = e.get("value");
@@ -57,13 +57,14 @@ public class SparseMatrix {
 
     /**
      * 稀疏矩阵转换回原始数组
+     *
      * @param spareArray 稀疏矩阵
      * @return 转换后的原始二维数组
      */
-    public static int[][] toOriginalArray(int[][] spareArray){
+    public static int[][] toOriginalArray(int[][] spareArray) {
         int[][] ret = new int[spareArray[0][1]][spareArray[0][1]];
         int number = spareArray[0][2];
-        for(int i = 1; i <= number; i++){
+        for (int i = 1; i <= number; i++) {
             ret[spareArray[i][0]][spareArray[i][1]] = spareArray[i][2];
         }
         return ret;
