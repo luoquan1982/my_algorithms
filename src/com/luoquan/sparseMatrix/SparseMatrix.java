@@ -1,6 +1,6 @@
-package sparseMatrix;
+package com.luoquan.sparseMatrix;
 
-import tool.ArrayTool;
+import com.luoquan.tool.ArrayTool;
 
 import java.util.*;
 
@@ -68,8 +68,7 @@ public class SparseMatrix {
     }
 
     /**
-     *
-     * @param row 指定生成的稀疏矩阵的行数
+     * @param row    指定生成的稀疏矩阵的行数
      * @param column 指定生成的稀疏矩阵的列数
      * @param number 指定稀疏矩阵的元素个数
      * @return 生成的稀疏矩阵
@@ -82,7 +81,7 @@ public class SparseMatrix {
         int capacity = row * column;
         List<Integer> positions = new LinkedList<>();
 
-        for(int i=0; i < capacity;i++){
+        for (int i = 0; i < capacity; i++) {
             positions.add(i);
         }
         Collections.shuffle(positions);
@@ -91,10 +90,10 @@ public class SparseMatrix {
 
         Random rd = new Random();
         int position;
-        for(int i = 0; i < number;i++){
+        for (int i = 0; i < number; i++) {
             position = positions.remove(0);
-            int r = position/column;
-            int c = position%column;
+            int r = position / column;
+            int c = position % column;
             ret[r][c] = rd.nextInt(100);
         }
 
@@ -122,7 +121,7 @@ public class SparseMatrix {
         ArrayTool.printTwoDimensionalArray(originArray);
 
         System.out.println("Create random array:");
-        int[][] randomArray = createTwoDimensionalArray(10,10,10);
+        int[][] randomArray = createTwoDimensionalArray(10, 10, 10);
         ArrayTool.printTwoDimensionalArray(randomArray);
         System.out.println("To Spare");
         int[][] spare = toSparseArray(randomArray);
