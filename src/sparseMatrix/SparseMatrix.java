@@ -2,10 +2,7 @@ package sparseMatrix;
 
 import tool.ArrayTool;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * SparseMatrix
@@ -70,6 +67,40 @@ public class SparseMatrix {
         return ret;
     }
 
+    /**
+     *
+     * @param row 指定生成的稀疏矩阵的行数
+     * @param column 指定生成的稀疏矩阵的列数
+     * @param number 指定稀疏矩阵的元素个数
+     * @return 生成的稀疏矩阵
+     */
+    public static int[][] createTwoDimensionalArray(int row, int column, int number) {
+        if (row < 0 || column < 0 || number < 0 || number > row * column) {
+            throw new IllegalArgumentException("参数错误");
+        }
+
+        int capacity = row * column;
+        List<Integer> positions = new LinkedList<>();
+
+        for(int i=0; i < capacity;i++){
+            positions.add(i);
+        }
+        Collections.shuffle(positions);
+
+        int[][] ret = new int[row][column];
+
+        Random rd = new Random();
+        int position;
+        for(int i = 0; i < number;i++){
+            position = positions.remove(0);
+            int r = position/column;
+            int c = position%column;
+            ret[r][c] = rd.nextInt(100);
+        }
+
+        return ret;
+    }
+
     public static void main(String[] args) {
         // 创建一个原始的二维数组11*11
         // 0:表示没有旗子,1:表示黑子,2:表示白子
@@ -89,6 +120,13 @@ public class SparseMatrix {
         System.out.println("稀疏矩阵转换成原始数组");
         int[][] originArray = toOriginalArray(ret);
         ArrayTool.printTwoDimensionalArray(originArray);
+
+        System.out.println("Create random array:");
+        int[][] randomArray = createTwoDimensionalArray(10,10,10);
+        ArrayTool.printTwoDimensionalArray(randomArray);
+        System.out.println("To Spare");
+        int[][] spare = toSparseArray(randomArray);
+        ArrayTool.printTwoDimensionalArray(spare);
     }
 
 }
