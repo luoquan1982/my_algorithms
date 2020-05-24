@@ -8,9 +8,13 @@ package com.luoquan.tool;
  */
 public class ArrayTool {
 
+    /**
+     * 打印二维数组
+     * @param array 待打印的二维数组
+     */
     public static void printTwoDimensionalArray(int[][] array){
         for(int[] row:array){
-            for(int element:row){
+            for (int element : row) {
                 System.out.printf("%d\t",element);
             }
             System.out.println();
