@@ -3,9 +3,52 @@ package com.luoquan.dynamic;
 import com.luoquan.tool.StringTool;
 import com.sun.istack.internal.NotNull;
 
-import java.util.Random;
-
 public class Kmp {
+
+    private final int[][] dp;
+    private final String pattern;
+
+    public Kmp(String pattern) {
+        this.pattern = pattern;
+        //S:有限状态机，匹配到第几个字符了
+        int S = pattern.length();
+        //dp[状态][字符] = 下个状态
+        this.dp = new int[S][256];
+        //只有遇到 pat[0] 这个字符才能使状态从 0 转移到 1，遇到其它字符的话还是停留在状态 0
+        dp[0][pattern.charAt(0)] = 1;
+        // 影子状态X初始为0
+        int shadow = 0;
+        // 当前状态 j从1开始
+        for (int j = 1; j < S; j++) {
+            for (int c = 0; c < 256; c++) {
+                if (pattern.charAt(j) == c) {
+                    dp[j][c] = j + 1;
+                } else {
+                    dp[j][c] = dp[shadow][c];
+                }
+                // 更新影子状态
+                shadow = dp[shadow][pattern.charAt(j)];
+            }
+        }
+    }
+
+    public int search(String txt) {
+        int S = pattern.length();
+        int N = txt.length();
+        // pat 的初始态为 0
+        int j = 0;
+        for (int i = 0; i < N; i++) {
+            // 计算 pat 的下一个状态
+            j = dp[j][txt.charAt(i)];
+            // 到达终止态，返回结果
+            if (j == S) {
+                return i - S + 1;
+            }
+        }
+        // 没到达终止态，匹配失败
+        return -1;
+    }
+
     // violence search,only for reference
     public static int violenceSearch(@NotNull String txt, @NotNull String pattern) {
         int tLen = txt.length();
@@ -27,13 +70,29 @@ public class Kmp {
         return -1;
     }
 
-    public static void main(String[] args) {
-        String pattern = StringTool.randomAlphabetString(10);
-        String txt = StringTool.specifiedPatternString(10000,pattern,1);
-        int ret = violenceSearch(txt,pattern);
+    private static long testSearch(int method, int count) {
+        long start = System.currentTimeMillis();
+        if (method == 1) {
+            for (int i = 0; i < count; i++) {
+                String pattern = StringTool.randomAlphabetString(20);
+                String txt = StringTool.specifiedPatternString(10000, pattern, 1);
+                violenceSearch(txt, pattern);
+            }
+        } else {
+            for (int i = 0; i < count; i++) {
+                String pattern = StringTool.randomAlphabetString(20);
+                String txt = StringTool.specifiedPatternString(10000, pattern, 1);
+                Kmp kmp = new Kmp(pattern);
+                kmp.search(txt);
+            }
+        }
+        return System.currentTimeMillis() - start;
+    }
 
-        System.out.println(txt);
-        System.out.println(pattern + "\n");
-        System.out.println(ret);
+    public static void main(String[] args) {
+        long violenceTime = testSearch(1, 100000);
+        long kmpTime = testSearch(2, 100000);
+        System.out.println("violence time:" + violenceTime);
+        System.out.println("kmp time:" + kmpTime);
     }
 }
