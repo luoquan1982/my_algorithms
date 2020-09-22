@@ -1,5 +1,7 @@
 package com.luoquan.tool;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.Random;
 
 /**
@@ -9,10 +11,10 @@ import java.util.Random;
  * @date 2020/9/20 9:32
  */
 public final class StringTool {
-    private static String ALPHABETS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static String RANDOM_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private static int RANDOM_TYPE = 1;
-    private static int RANDOM_ALPHABET_TYPE = 1 << 1;
+    private static final String ALPHABETS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String RANDOM_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    public static final int RANDOM_TYPE = 1;
+    public static final int RANDOM_ALPHABET_TYPE = 1 << 1;
 
     public static String randomString(int length) {
         return randomString(length, RANDOM_TYPE);
@@ -60,5 +62,49 @@ public final class StringTool {
             throw new IllegalArgumentException();
         }
         return len != 0;
+    }
+
+    /**
+     * Generate specify count pattern String with Given length
+     *
+     * @param length 指定的字符串长度
+     * @param pattern 指定的模式串
+     * @param repeatCount 模式串在字符中重复的次数
+     * @return 指定长度，指定重复次数的模式串
+     */
+    public static String specifiedPatternString(int length, @NotNull String pattern, int repeatCount) {
+        if (pattern.length() * repeatCount > length) {
+            throw new IllegalArgumentException("pattern string length greater than given length");
+        }
+        // 指定重复串的长度
+        int pLength = pattern.length();
+        int restInsertStringLength = length - pLength * repeatCount;
+        int currentStringLength;
+        Random rd = new Random();
+        StringBuilder result = new StringBuilder();
+
+
+        while (repeatCount > 0) {
+            repeatCount--;
+            if (restInsertStringLength > 0) {
+                currentStringLength = rd.nextInt(restInsertStringLength);
+
+                result.append(randomAlphabetString(currentStringLength));
+                result.append(pattern);
+
+                restInsertStringLength -= currentStringLength;
+            }
+        }
+
+        if (restInsertStringLength > 0) {
+            result.append(randomAlphabetString(restInsertStringLength));
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        String ret = specifiedPatternString(20, "abc", 3);
+        System.out.println(ret);
+        System.out.println(ret.length());
     }
 }
