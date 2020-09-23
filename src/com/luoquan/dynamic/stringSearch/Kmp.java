@@ -1,4 +1,4 @@
-package com.luoquan.dynamic;
+package com.luoquan.dynamic.stringSearch;
 
 import com.luoquan.tool.StringTool;
 import com.sun.istack.internal.NotNull;
@@ -20,15 +20,12 @@ public class Kmp {
         int shadow = 0;
         // 当前状态 j从1开始
         for (int j = 1; j < S; j++) {
-            for (int c = 0; c < 256; c++) {
-                if (pattern.charAt(j) == c) {
-                    dp[j][c] = j + 1;
-                } else {
-                    dp[j][c] = dp[shadow][c];
-                }
-                // 更新影子状态
-                shadow = dp[shadow][pattern.charAt(j)];
+            for(int c = 0; c < 256; c++) {
+                dp[j][c] = dp[shadow][c];
             }
+            dp[j][pattern.charAt(j)] = j + 1;
+            // 更新影子状态
+            shadow = dp[shadow][pattern.charAt(j)];
         }
     }
 
@@ -75,13 +72,13 @@ public class Kmp {
         if (method == 1) {
             for (int i = 0; i < count; i++) {
                 String pattern = StringTool.randomAlphabetString(20);
-                String txt = StringTool.specifiedPatternString(10000, pattern, 1);
+                String txt = StringTool.specifiedPatternString(100000, pattern, 1);
                 violenceSearch(txt, pattern);
             }
         } else {
             for (int i = 0; i < count; i++) {
                 String pattern = StringTool.randomAlphabetString(20);
-                String txt = StringTool.specifiedPatternString(10000, pattern, 1);
+                String txt = StringTool.specifiedPatternString(100000, pattern, 1);
                 Kmp kmp = new Kmp(pattern);
                 kmp.search(txt);
             }
@@ -90,8 +87,8 @@ public class Kmp {
     }
 
     public static void main(String[] args) {
-        long violenceTime = testSearch(1, 100000);
-        long kmpTime = testSearch(2, 100000);
+        long violenceTime = testSearch(1, 1000);
+        long kmpTime = testSearch(2, 1000);
         System.out.println("violence time:" + violenceTime);
         System.out.println("kmp time:" + kmpTime);
     }
